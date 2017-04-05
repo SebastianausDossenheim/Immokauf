@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Immobilienkaufpreisrechner! Ermittlung des Haushaltsüberschusses und Berechnung der Kredithöhe. Unter Berücksichtigung von Eigenkapital und Nebenkosten wird dann der Kaufpreis errechnet.">
+	<title>Immobilienrechner</title>
+	<link href="lib/bildschirm.css" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script type="text/javascript">
+	</script>
+	<script src="lib/jquery-3.1.1.js"></script>
+	<script>
+		$(document).ready(function() {
+
+		});
+	</script>
+	<script src="lib/immokauf.js"></script>
+
+</head>
+
+<body>
+	<div id="wrapper">
+		<h1>Immobilienpreis-Schnellcheck!</h1>
+		<h2>Was kann ich mir leisten? Wieviel darf meine Immobilie kosten?</h2>
+		<p>
+			Die Einnahmen und die Ausgaben werden gegenübergestellt und es wird unter Berücksichtigung von "Mindest-" und "Pauschalwerten" bei verschiedenen Positionen ein "Überschuss" ermittelt. Mit diesem "Monatsüberschuss" kann eine Kreditrate bedient werden.
+		</p><br/>
+		<div>
+			<span class="left">
+		<form id="einnahmen">
+            <h4>Einnahmen:</h4>
+			<label for="geh1">Gehalt/Bezüge: </label>
+			<input id="geh1" name="ein" type="number" min="0" max="20000" step="100" />
+			<label for="geh2">Geh./Bez. Eheg./Partner(in): </label>
+			<input id="geh2" name="ein" type="number" min="0" max="20000" step="100" />
+			<label for="kiGe">Kindergeld: </label>
+			<input id="kiGe" name="ein" type="number" min="0" max="1000" />
+			<label for="mietE">Mieteinnahme(n) kalt: </label>
+			<input id="mietE" name="ein" type="number" min="0" max="20000" step="100" />
+			<label for="unt">Unterhaltseinnahmen: </label>
+			<input id="unt" name="ein" type="number" min="0" max="20000" step="100" />
+			<label for="sonstE">Sonstige (feste) Einnahme(n): </label>
+			<input id="sonstE" name="ein" type="number" min="0" max="20000" step="100" />
+		</form>
+        </span>
+			<form id="ausgaben">
+				<h4>Ausgaben:</h4>
+				<label for="lhk">Monatl. Lebenshaltungskosten: </label>
+				<input id="lhk" name="aus" type="number" min="0" max="20000" step="100" />
+				<label for="kv">Private Krankenversicherung: </label>
+				<input id="kv" name="aus" type="number" min="0" max="1000" step="10" />
+				<label for="mietA">Mietausgaben (kalt): </label>
+				<input id="mietA" name="aus" type="number" min="0" max="20000" step="100" />
+				<label for="bew">Bewirtschaftung/Wohngeld: </label>
+				<input id="bew" name="aus" type="number" min="0" max="20000" step="100" />
+				<label for="dl">Bestehende Darlehensraten: </label>
+				<input id="dl" name="aus" type="number" min="0" max="20000" step="10 " />
+				<label for="spar">Aktuelle Sparraten: </label>
+				<input id="spar" name="aus" type="number" min="0" max="20000" step="100" />
+			</form>
+		</div>
+
+
+
+
+
+		<div>
+			<div id="sonstige_angaben">
+				<form>
+					<h4>Weitere wichtige Angaben:</h4>
+					<label for="erw">Erwachsene Pers. im Haus: </label>
+					<input id="erw" name="sonst" type="number" min="1" max="10" value="2" />
+					<label for="ki">Kinder im Haushalt: </label>
+					<input id="ki" name="sonst" type="number" min="0" max="10" value="1" />
+					<label for="wf_verm">Vermietete Wohnfläche (qm): </label>
+					<input id="wf_verm" name="sonst" type="number" min="0" max="20000" value="0" />
+					<label for="wf_eigen">Wohnfl. Eingennutzung (qm): </label>
+					<input id="wf_eigen" name="sonst" type="number" min="0" max="10000" value="100" />
+					<label for="bish_miete">Entfällt die bisherige Miete? </label>
+					<input id="bish_miete" name="sonst" type="checkbox" checked />
+					<br/>
+					<label for="bish_spar">Bisherige Sparraten einstellen?</label>
+					<input id="bish_spar" name="sonst" type="checkbox" />
+				</form>
+			</div>
+			<div class="erl">
+
+				<p> <br/> Der "rechnerische Überschuss aufgrund der Eingaben und der "ansetzbare Übeschuss" können voneinander abweichen. Dies liegt an Abschlägen bei den Mieteinnahmen (Mietausfallwagnis) und an bestimmten Mindespauschalen bspw. für Lebenshaltung oder für die Bewirtschaftung von Wohneigentum.
+				</p>
+			</div>
+		</div>
+
+		<div>
+			<button id="ueberschuss">Berechnung Überschuss</button>
+			<br/>
+			<button id="reset_1">Zurücksetzen</button>
+			<br/><br/>
+		</div>
+
+
+
+
+		<div>
+			<div>
+				<div id="zusatzangaben_2">
+					<form id="auswertung">
+						<label for="rech_ueberschuss">Rechnerischer Überschuß: </label>
+						<input id="rech_ueberschuss" name="Rech_ueberschuss" type="number" min="0" disabled />
+						<label for="ans_ueberschuss">Ansetzbarer Überschuß: </label>
+						<input id="ans_ueberschuss" name="Ans_ueberschuss" type="number" min="0" disabled />
+						<label for="einsatz">Als Kreditrate einzusetzen: </label>
+						<input id="einsatz" name="einsatz" type="number" min="0" step="100.00" placeholder="Kreditrate?" />
+						<label for="zinsen"><a id="zinscheck" href="https://www.check24.de/baufinanzierung/zinsrechner/?schnell_check=1" title="Link zum Zinscheck" target="_blank">Aktueller Zins</a> in %:</label>
+						<input type="number" id="zinsen" name="zins" min="0" max="10" step=".1" placeholder="Zinssatz?" />
+					</form>
+
+					<form id="laufzeit">
+						<label for="schnell">Schnelle Rückzahlung</label>
+						<input type="radio" id="schnell" name="Rueckzahlung"><br/>
+						<label for="mittel">Mittlere Rückzahlung</label>
+						<input type="radio" id="mittel" name="Rueckzahlung" checked><br/>
+						<label for="lang">Langsame Rückzahlung</label>
+						<input type="radio" id="lang" name="Rueckzahlung"><br/>
+					</form>
+				</div>
+
+				<div class="erl">
+					<p>
+						Mit dem Button "Berechnen" wird jetzt der maximale Kreditrahmen aufgrund des Monatsüberschusses, dem geschätzten Zins und der favorisierten Gesamtlaufzeit ermittelt. "Schnelle Rückzahlung" bedeutet in diesem Fall ca. 15 bis 20 Jahre Gesamtlaufzeit (lfd. Tilgung 5%), "mittlere Rückzahlung" ca. 20 bis 30 Jahre (lfd. Tildung 3%) und "langsame Rückzahlung" mehr als 40 (zum Teil auch deutlich über 60) Jahre (lfd. Tilgung 1%).
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<button id="kreditrahmen">Berechnung Kreditrahmen</button> <br/>
+			<button id="reset_2">Zurücksetzen</button>
+			<br/><br/>
+		</div>
+
+
+		<div>
+			<div id="kreditrahmen_kosten">
+				<form>
+					<label for="kreditvolumen">Ermittelter KREDITRAHMEN:</label>
+					<input id="kreditvolumen" type="number" min="0" />
+					<!--disabeld-->
+				</form>
+
+				<form id="nk">
+
+					<label for="ek">Einzusetzendes Eigenkapital in EUR:</label>
+					<input id="ek" name="" type="number" min="0" />
+					<br/>
+					<h4>Kosten:</h4>
+					<label for="gest">Grunderwerbssteuer in %:</label>
+					<input id="gest" type="number" min="0" max="10.00" step="0.01" value="5.00" />
+					<label for="notar_gb">Notar-/Grundbuchkosten in %:</label>
+					<input id="notar_gb" type="number" min="0" max="10.00" step="0.01" value="2.00" />
+					<label for="makler">Makler in %:</label>
+					<input id="makler" type="number" min="0" max="10.00" step="0.01" value="3.57" />
+					<label for="sonstige_nk">Sonstige Kosten in EUR:</label>
+					<input id="sonstige_nk" type="number" min="0" step="10.00" />
+					<!--value="0,00"-->
+				</form>
+			</div>
+
+			<p class="erl">
+				Jetzt kommt das vorhandene Eigenkapital zum Einsatz. Auch müssen verschiedene Kosten berücksichtigt werden, die bei einem Immobilienkauf anfallen. Unter Berücksichtigung dieser Werte wird dann er maximale Kaufpreis ermittelt.
+			</p>
+
+
+		</div>
+
+		<div>
+			<button id="kp">Berechnung Kaufpreis</button><br/>
+			<button id="reset_3">Zurücksetzen</button>
+			<br/><br/>
+			<form>
+				<label for="kp_erg">Maximaler Kaufpreis:</label>
+				<input id="kp_erg" type="number" disabled />
+			</form>
+			<br/>
+		</div>
+		
+		<div id="zusatzinfos">
+		
+		
+		</div>
+		
+		
+		
+		
+		
+
+		<footer>
+			Sebastian Twardawski &bull; Ringstr. 2 &bull; 69221 Dossenheim
+			<br>
+			&#9742; (0 62 21) 72 73 411 &bull; &#128231; info@sebl-home.de
+		</footer>
+		
+		
+		
+</div>
+</body>
+</html>
